@@ -2,7 +2,7 @@ import React from "react";
 import {useDispatch, useSelector} from  "react-redux"
 import  _ from "lodash"
 import { GetPokemonList } from "../actions/pokemonAction";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import ReactPaginate from "react-paginate"
 
@@ -10,31 +10,31 @@ import ReactPaginate from "react-paginate"
 
 
 const Pokemonlist = (props) => { 
-    const [search, setSearch] = useState(initialstate: "")
+    const [search, setSearch] = useState("")
     const dispatch = useDispatch();
-    const Pokemonlist = useSelector(state => state.Pokemonlist);
-    React.useEffect(effect = () =>{ 
-        FetchData(page :1)
+    const Pokemonlist = useSelector(state => state.PokemonList);
+    const navigate = useNavigate()
 
-    },deps: []);
+    React.useEffect(() =>{ 
+        FetchData(1)
+    },[]);
 
-    const FetchData = (page = 1) => { 
+    const FetchData = (page) => { 
         dispatch(GetPokemonList(page))
 
     }
 
     const ShowData = () =>{ 
-        
         if(Pokemonlist.loading){ 
             return<p>loading...</p>
         }
 
 
-        if (!_. isEmpty(Pokemonlist.date)){ 
+        if (!_.isEmpty(Pokemonlist.data)){ 
             return(  
                  <div className={"list-wrapper"}> 
                 {Pokemonlist.data.map(el =>{ 
-                return (<div className={"pokemon-item"}> 
+                return (<div className={"pokemon-item"} key={el.name}> 
                     <p>{el.name}</p>
                     <Link  to ={`/pokemon/${el.name}`}>view</Link>
                </div> 
@@ -56,18 +56,18 @@ const Pokemonlist = (props) => {
         <div> 
             <div className={"search-wrapper"}> 
             <p>search:</p>
-            <input type='text' onCgange = {e =>setSearch(e.target.value)}></input>
-            <button onClick={()=>props.history.push(`/pokemon/${search}`)}>search</button>
+            <input type='text' onChange = {e =>setSearch(e.target.value)}></input>
+            <button onClick={()=>navigate(`/pokemon/${search}`)}>search</button>
 
             </div>
             {ShowData()}
-            {!_. isEmpty(Pokemonlist.date) && ( 
+            {!_.isEmpty(Pokemonlist.data) && ( 
                 <ReactPaginate 
-                pageCount={Math.ceil(pokemonlist.count / 15)} 
+                pageCount={Math.ceil(Pokemonlist.count / 15)} 
                 pageRangeDisplayed = {2} 
                 marginPagesDisplayed = {1} 
                 onPageChange = {(data) =>FetchData(data.selected +1)} 
-                containerClassName = {"pagination"}
+                containerClassName = "pagination"
                 />
             )}
         </div>

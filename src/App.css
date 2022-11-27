@@ -25,12 +25,12 @@ nav a {
 
 }
 
-list-wrapper{ 
+.list-wrapper{ 
   width: 90%;
   margin: auto;
 }
 
-list-wrapper .pokemon-item{ 
+.list-wrapper .pokemon-item{ 
   margin: 10px 0;
   display: flex;
   justify-content: space-between;

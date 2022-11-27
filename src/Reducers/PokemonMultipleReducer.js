@@ -6,10 +6,6 @@ const DefaultState = {
     errorMsg: ""
 
 };
- const test = { 
-    pikachu: {abilities: []},
-    balbasour: {abilities: []}
- }
 
 const PokemonMultipleReducer = (state = DefaultState, action) => { 
     switch (action.type){ 
@@ -31,11 +27,8 @@ const PokemonMultipleReducer = (state = DefaultState, action) => {
             return{ 
                 ...state,
                 loading: false,
-                errorMsg:""
-                data: { 
-                    ...state.data,
-                    [action.pokemonName]: action.payload
-                }
+                errorMsg:"",
+                data : {...action.payload.data, pokemonName : action.payload.pokemonName}
             }
             default:
                 return state
